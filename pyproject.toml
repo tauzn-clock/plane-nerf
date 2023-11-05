@@ -6,8 +6,7 @@ version = "0.1.0"
 dependencies = ["nerfstudio >= 0.3.0"] 
 
 [tool.setuptools.packages.find]
-include = ["method_template*"]
+include = ["plane_nerf*"]
 
-# register the entry point of your new method here:
 [project.entry-points.'nerfstudio.method_configs']
-method-template = 'method_template.template_config:method_template'
+plane_nerf = 'plane_nerf.plane_nerf_config:plane_nerf'
