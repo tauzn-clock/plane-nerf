@@ -9,7 +9,7 @@ from __future__ import annotations
 from method_template.template_datamanager import (
     TemplateDataManagerConfig,
 )
-from method_template.template_model import TemplateModelConfig
+from method_template.plane_nerf_model import TemplateModelConfig
 from method_template.template_pipeline import (
     TemplatePipelineConfig,
 )
