@@ -6,12 +6,12 @@ Define your custom method here that registers with Nerfstudio CLI.
 
 from __future__ import annotations
 
-from plane_nerf.template_datamanager import (
-    TemplateDataManagerConfig,
+from plane_nerf.plane_nerf_datamanager import (
+    PlaneNerfDataManagerConfig,
 )
 from plane_nerf.plane_nerf_model import PlaneNerfConfig
-from plane_nerf.template_pipeline import (
-    TemplatePipelineConfig,
+from plane_nerf.plane_nerf_pipeline import (
+    PlaneNerfPipelineConfig,
 )
 from nerfstudio.configs.base_config import ViewerConfig
 from nerfstudio.data.dataparsers.nerfstudio_dataparser import NerfstudioDataParserConfig
@@ -30,8 +30,8 @@ plane_nerf_method = MethodSpecification(
         steps_per_save=2000,
         max_num_iterations=30000,
         mixed_precision=True,
-        pipeline=TemplatePipelineConfig(
-            datamanager=TemplateDataManagerConfig(
+        pipeline=PlaneNerfPipelineConfig(
+            datamanager=PlaneNerfDataManagerConfig(
                 dataparser=NerfstudioDataParserConfig(),
                 train_num_rays_per_batch=4096,
                 eval_num_rays_per_batch=4096,
