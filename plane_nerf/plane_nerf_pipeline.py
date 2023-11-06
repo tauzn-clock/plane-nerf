@@ -10,7 +10,7 @@ import torch.distributed as dist
 from torch.cuda.amp.grad_scaler import GradScaler
 from torch.nn.parallel import DistributedDataParallel as DDP
 
-from plane_nerf.template_datamanager import TemplateDataManagerConfig
+from plane_nerf.plane_nerf_datamanager import PlaneNerfDataManagerConfig
 from plane_nerf.plane_nerf_model import PlaneNerfModel, PlaneNerfConfig
 from nerfstudio.data.datamanagers.base_datamanager import (
     DataManager,
@@ -24,18 +24,18 @@ from nerfstudio.pipelines.base_pipeline import (
 
 
 @dataclass
-class TemplatePipelineConfig(VanillaPipelineConfig):
+class PlaneNerfPipelineConfig(VanillaPipelineConfig):
     """Configuration for pipeline instantiation"""
 
-    _target: Type = field(default_factory=lambda: TemplatePipeline)
+    _target: Type = field(default_factory=lambda: PlaneNerfPipeline)
     """target class to instantiate"""
-    datamanager: DataManagerConfig = TemplateDataManagerConfig()
+    datamanager: DataManagerConfig = PlaneNerfDataManagerConfig()
     """specifies the datamanager config"""
-    model: ModelConfig = TemplateModelConfig()
+    model: ModelConfig = PlaneNerfModelConfig()
     """specifies the model config"""
 
 
-class TemplatePipeline(VanillaPipeline):
+class PlaneNerfPipeline(VanillaPipeline):
     """Template Pipeline
 
     Args:
@@ -44,7 +44,7 @@ class TemplatePipeline(VanillaPipeline):
 
     def __init__(
         self,
-        config: TemplatePipelineConfig,
+        config: PlaneNerfPipelineConfig,
         device: str,
         test_mode: Literal["test", "val", "inference"] = "val",
         world_size: int = 1,
@@ -72,6 +72,6 @@ class TemplatePipeline(VanillaPipeline):
         self.world_size = world_size
         if world_size > 1:
             self._model = typing.cast(
-                TemplateModel, DDP(self._model, device_ids=[local_rank], find_unused_parameters=True)
+                PlaneNerfModel, DDP(self._model, device_ids=[local_rank], find_unused_parameters=True)
             )
             dist.barrier(device_ids=[local_rank])
