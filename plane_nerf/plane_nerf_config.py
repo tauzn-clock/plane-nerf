@@ -9,7 +9,7 @@ from __future__ import annotations
 from plane_nerf.template_datamanager import (
     TemplateDataManagerConfig,
 )
-from plane_nerf.plane_nerf_model import TemplateModelConfig
+from plane_nerf.plane_nerf_model import PlaneNerfConfig
 from plane_nerf.template_pipeline import (
     TemplatePipelineConfig,
 )
@@ -36,7 +36,7 @@ plane_nerf_method = MethodSpecification(
                 train_num_rays_per_batch=4096,
                 eval_num_rays_per_batch=4096,
             ),
-            model=TemplateModelConfig(
+            model=PlaneNerfConfig(
                 eval_num_rays_per_chunk=1 << 15,
             ),
         ),

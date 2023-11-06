@@ -49,14 +49,14 @@ from nerfstudio.model_components.shaders import NormalsShader
 from nerfstudio.models.base_model import Model, ModelConfig
 from nerfstudio.utils import colormaps
 
-from plane_nerf.plane_nerf_field import NerfactoField
+from plane_nerf.plane_nerf_field import PlaneNerfField
 
 
 @dataclass
 class PlaneNerfConfig(ModelConfig):
     """Nerfacto Model Config"""
 
-    _target: Type = field(default_factory=lambda: NerfactoModel)
+    _target: Type = field(default_factory=lambda: PlaneNerfModel)
     near_plane: float = 0.05
     """How far along the ray to start sampling."""
     far_plane: float = 1000.0
