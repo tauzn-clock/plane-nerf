@@ -151,7 +151,7 @@ class PlaneNerfModel(Model):
             scene_contraction = SceneContraction(order=float("inf"))
 
         # Fields
-        self.field = NerfactoField(
+        self.field = PlaneNerfField(
             self.scene_box.aabb,
             hidden_dim=self.config.hidden_dim,
             num_levels=self.config.num_levels,
