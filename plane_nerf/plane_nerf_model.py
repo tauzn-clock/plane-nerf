@@ -34,7 +34,6 @@ from nerfstudio.engine.callbacks import TrainingCallback, TrainingCallbackAttrib
 from nerfstudio.field_components.field_heads import FieldHeadNames
 from nerfstudio.field_components.spatial_distortions import SceneContraction
 from nerfstudio.fields.density_fields import HashMLPDensityField
-from nerfstudio.fields.nerfacto_field import NerfactoField
 from nerfstudio.model_components.losses import (
     MSELoss,
     distortion_loss,
@@ -50,9 +49,11 @@ from nerfstudio.model_components.shaders import NormalsShader
 from nerfstudio.models.base_model import Model, ModelConfig
 from nerfstudio.utils import colormaps
 
+from plane_nerf.plane_nerf_field import NerfactoField
+
 
 @dataclass
-class NerfactoModelConfig(ModelConfig):
+class PlaneNerfConfig(ModelConfig):
     """Nerfacto Model Config"""
 
     _target: Type = field(default_factory=lambda: NerfactoModel)
@@ -131,14 +132,14 @@ class NerfactoModelConfig(ModelConfig):
     """Config of the camera optimizer to use"""
 
 
-class NerfactoModel(Model):
+class PlaneNerfModel(Model):
     """Nerfacto model
 
     Args:
         config: Nerfacto configuration to instantiate model
     """
 
-    config: NerfactoModelConfig
+    config: PlaneNerfConfig
 
     def populate_modules(self):
         """Set the fields and modules."""

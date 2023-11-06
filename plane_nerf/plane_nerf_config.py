@@ -6,11 +6,11 @@ Define your custom method here that registers with Nerfstudio CLI.
 
 from __future__ import annotations
 
-from method_template.template_datamanager import (
+from plane_nerf.template_datamanager import (
     TemplateDataManagerConfig,
 )
-from method_template.plane_nerf_model import TemplateModelConfig
-from method_template.template_pipeline import (
+from plane_nerf.plane_nerf_model import TemplateModelConfig
+from plane_nerf.template_pipeline import (
     TemplatePipelineConfig,
 )
 from nerfstudio.configs.base_config import ViewerConfig
@@ -23,9 +23,9 @@ from nerfstudio.engine.trainer import TrainerConfig
 from nerfstudio.plugins.types import MethodSpecification
 
 
-method_template = MethodSpecification(
+plane_nerf_method = MethodSpecification(
     config=TrainerConfig(
-        method_name="method-template",  # TODO: rename to your own model
+        method_name="method-template",
         steps_per_eval_batch=500,
         steps_per_save=2000,
         max_num_iterations=30000,
@@ -58,5 +58,5 @@ method_template = MethodSpecification(
         viewer=ViewerConfig(num_rays_per_chunk=1 << 15),
         vis="viewer",
     ),
-    description="Nerfstudio method template.",
+    description="Plane Nerf Method",
 )

@@ -9,4 +9,4 @@ dependencies = ["nerfstudio >= 0.3.0"]
 include = ["plane_nerf*"]
 
 [project.entry-points.'nerfstudio.method_configs']
-plane_nerf = 'plane_nerf.plane_nerf_config:plane_nerf'
+plane_nerf = 'plane_nerf.plane_nerf_config:plane_nerf_method'

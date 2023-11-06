@@ -40,7 +40,7 @@ from nerfstudio.field_components.spatial_distortions import SpatialDistortion
 from nerfstudio.fields.base_field import Field, get_normalized_directions
 
 
-class NerfactFoield(Field):
+class PlaneNerfField(Field):
     """Compound Field that uses TCNN
 
     Args:
