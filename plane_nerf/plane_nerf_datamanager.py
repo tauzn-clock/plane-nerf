@@ -15,7 +15,7 @@ from nerfstudio.data.datamanagers.base_datamanager import (
 
 
 @dataclass
-class PlaneNerfManagerConfig(VanillaDataManagerConfig):
+class PlaneNerfDataManagerConfig(VanillaDataManagerConfig):
     """Template DataManager Config
 
     Add your custom datamanager config parameters here.
