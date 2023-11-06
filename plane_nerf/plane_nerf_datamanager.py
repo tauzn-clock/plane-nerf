@@ -21,7 +21,7 @@ class PlaneNerfDataManagerConfig(VanillaDataManagerConfig):
     Add your custom datamanager config parameters here.
     """
 
-    _target: Type = field(default_factory=lambda: PlaneNerfManager)
+    _target: Type = field(default_factory=lambda: PlaneNerfDataManager)
 
 
 class PlaneNerfDataManager(VanillaDataManager):
@@ -31,7 +31,7 @@ class PlaneNerfDataManager(VanillaDataManager):
         config: the DataManagerConfig used to instantiate class
     """
 
-    config: PlaneNerfManagerConfig
+    config: PlaneNerfDataManagerConfig
 
     def __init__(
         self,

@@ -31,7 +31,7 @@ class PlaneNerfPipelineConfig(VanillaPipelineConfig):
     """target class to instantiate"""
     datamanager: DataManagerConfig = PlaneNerfDataManagerConfig()
     """specifies the datamanager config"""
-    model: ModelConfig = PlaneNerfModelConfig()
+    model: ModelConfig = PlaneNerfConfig()
     """specifies the model config"""
 
 

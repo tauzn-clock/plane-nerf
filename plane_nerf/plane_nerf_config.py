@@ -25,7 +25,7 @@ from nerfstudio.plugins.types import MethodSpecification
 
 plane_nerf_method = MethodSpecification(
     config=TrainerConfig(
-        method_name="plane-nerf-method",
+        method_name="plane-nerf",
         steps_per_eval_batch=500,
         steps_per_save=2000,
         max_num_iterations=30000,
