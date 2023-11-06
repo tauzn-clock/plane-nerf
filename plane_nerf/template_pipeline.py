@@ -11,7 +11,7 @@ from torch.cuda.amp.grad_scaler import GradScaler
 from torch.nn.parallel import DistributedDataParallel as DDP
 
 from plane_nerf.template_datamanager import TemplateDataManagerConfig
-from plane_nerf.plane_nerf_model import TemplateModel, TemplateModelConfig
+from plane_nerf.plane_nerf_model import PlaneNerfModel, PlaneNerfConfig
 from nerfstudio.data.datamanagers.base_datamanager import (
     DataManager,
     DataManagerConfig,
