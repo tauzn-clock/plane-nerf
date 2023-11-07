@@ -59,29 +59,29 @@ class PlaneNerfConfig(ModelConfig):
     _target: Type = field(default_factory=lambda: PlaneNerfModel)
     near_plane: float = 0.05
     """How far along the ray to start sampling."""
-    far_plane: float = 1000.0
+    far_plane: float = 10.0
     """How far along the ray to stop sampling."""
     background_color: Literal["random", "last_sample", "black", "white"] = "last_sample"
     """Whether to randomize the background color."""
-    hidden_dim: int = 64
+    hidden_dim: int = 16
     """Dimension of hidden layers"""
-    hidden_dim_color: int = 64
+    hidden_dim_color: int = 16
     """Dimension of hidden layers for color network"""
-    hidden_dim_transient: int = 64
+    hidden_dim_transient: int = 16
     """Dimension of hidden layers for transient network"""
     num_levels: int = 16
     """Number of levels of the hashmap for the base mlp."""
     base_res: int = 16
     """Resolution of the base grid for the hashgrid."""
-    max_res: int = 2048
+    max_res: int = 512
     """Maximum resolution of the hashmap for the base mlp."""
     log2_hashmap_size: int = 19
     """Size of the hashmap for the base mlp"""
     features_per_level: int = 2
     """How many hashgrid features per level"""
-    num_proposal_samples_per_ray: Tuple[int, ...] = (256, 96)
+    num_proposal_samples_per_ray: Tuple[int, ...] = (128, 48)
     """Number of samples per ray for each proposal network."""
-    num_nerf_samples_per_ray: int = 48
+    num_nerf_samples_per_ray: int = 16
     """Number of samples per ray for the nerf network."""
     proposal_update_every: int = 5
     """Sample every n steps after the warmup"""
@@ -93,8 +93,8 @@ class PlaneNerfConfig(ModelConfig):
     """Use the same proposal network. Otherwise use different ones."""
     proposal_net_args_list: List[Dict] = field(
         default_factory=lambda: [
+            {"hidden_dim": 16, "log2_hashmap_size": 17, "num_levels": 5, "max_res": 64, "use_linear": False},
             {"hidden_dim": 16, "log2_hashmap_size": 17, "num_levels": 5, "max_res": 128, "use_linear": False},
-            {"hidden_dim": 16, "log2_hashmap_size": 17, "num_levels": 5, "max_res": 256, "use_linear": False},
         ]
     )
     """Arguments for the proposal density fields."""
@@ -114,7 +114,7 @@ class PlaneNerfConfig(ModelConfig):
     """Whether to use average appearance embedding or zeros for inference."""
     proposal_weights_anneal_slope: float = 10.0
     """Slope of the annealing function for the proposal weights."""
-    proposal_weights_anneal_max_num_iters: int = 1000
+    proposal_weights_anneal_max_num_iters: int = 400
     """Max num iterations for the annealing function."""
     use_single_jitter: bool = True
     """Whether use single jitter or not for the proposal networks."""
@@ -126,7 +126,7 @@ class PlaneNerfConfig(ModelConfig):
     """Use gradient scaler where the gradients are lower for points closer to the camera."""
     implementation: Literal["tcnn", "torch"] = "tcnn"
     """Which implementation to use for the model."""
-    appearance_embed_dim: int = 32
+    appearance_embed_dim: int = 16
     """Dimension of the appearance embedding."""
     camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="SO3xR3")
     """Config of the camera optimizer to use"""
