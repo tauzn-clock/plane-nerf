@@ -54,7 +54,7 @@ from plane_nerf.plane_nerf_field import PlaneNerfField
 
 @dataclass
 class PlaneNerfConfig(ModelConfig):
-    """Nerfacto Model Config"""
+    """Plane Nerf Model Config"""
 
     _target: Type = field(default_factory=lambda: PlaneNerfModel)
     near_plane: float = 0.05
@@ -133,10 +133,10 @@ class PlaneNerfConfig(ModelConfig):
 
 
 class PlaneNerfModel(Model):
-    """Nerfacto model
+    """Plane Nerf model
 
     Args:
-        config: Nerfacto configuration to instantiate model
+        config: Plane Nerf configuration to instantiate model
     """
 
     config: PlaneNerfConfig
