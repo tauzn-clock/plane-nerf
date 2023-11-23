@@ -57,19 +57,19 @@ class PlaneNerfConfig(ModelConfig):
     """Plane Nerf Model Config"""
 
     _target: Type = field(default_factory=lambda: PlaneNerfModel)
-    near_plane: float = 2
+    near_plane: float = 0.05
     """How far along the ray to start sampling."""
-    far_plane: float = 10.0
+    far_plane: float = 1000.0
     """How far along the ray to stop sampling."""
     background_color: Literal["random", "last_sample", "black", "white"] = "last_sample"
     """Whether to randomize the background color."""
-    hidden_dim: int = 128
+    hidden_dim: int = 64
     """Dimension of hidden layers"""
-    hidden_dim_color: int = 128
+    hidden_dim_color: int = 64
     """Dimension of hidden layers for color network"""
-    hidden_dim_transient: int = 128
+    hidden_dim_transient: int = 64
     """Dimension of hidden layers for transient network"""
-    num_levels: int = 64
+    num_levels: int = 16
     """Number of levels of the hashmap for the base mlp."""
     base_res: int = 16
     """Resolution of the base grid for the hashgrid."""
@@ -93,8 +93,8 @@ class PlaneNerfConfig(ModelConfig):
     """Use the same proposal network. Otherwise use different ones."""
     proposal_net_args_list: List[Dict] = field(
         default_factory=lambda: [
-            {"hidden_dim": 16, "log2_hashmap_size": 17, "num_levels": 5, "max_res": 32, "use_linear": False},
-            {"hidden_dim": 16, "log2_hashmap_size": 17, "num_levels": 5, "max_res": 64, "use_linear": False},
+            {"hidden_dim": 16, "log2_hashmap_size": 17, "num_levels": 5, "max_res": 128, "use_linear": False},
+            {"hidden_dim": 16, "log2_hashmap_size": 17, "num_levels": 5, "max_res": 256, "use_linear": False},
         ]
     )
     """Arguments for the proposal density fields."""
@@ -114,7 +114,7 @@ class PlaneNerfConfig(ModelConfig):
     """Whether to use average appearance embedding or zeros for inference."""
     proposal_weights_anneal_slope: float = 10.0
     """Slope of the annealing function for the proposal weights."""
-    proposal_weights_anneal_max_num_iters: int = 400
+    proposal_weights_anneal_max_num_iters: int = 1000
     """Max num iterations for the annealing function."""
     use_single_jitter: bool = True
     """Whether use single jitter or not for the proposal networks."""
