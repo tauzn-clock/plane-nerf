@@ -38,7 +38,7 @@ from nerfstudio.field_components.mlp import MLP
 from nerfstudio.field_components.spatial_distortions import SpatialDistortion
 from nerfstudio.fields.base_field import Field, get_normalized_directions
 
-from plane_nerf.plane_nerf_utils import PlaneSceneBox as SceneBox
+from nerfstudio.data.scene_box import SceneBox
 
 class PlaneNerfField(Field):
     """Compound Field that uses TCNN
