@@ -128,8 +128,8 @@ class PlaneNerfConfig(ModelConfig):
     """Which implementation to use for the model."""
     appearance_embed_dim: int = 32
     """Dimension of the appearance embedding."""
-    #camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="SO3xR3")
-    camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="off")
+    camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="SO3xR3")
+    #camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="off")
     """Config of the camera optimizer to use"""
 
 
