@@ -63,11 +63,11 @@ class PlaneNerfConfig(ModelConfig):
     """How far along the ray to stop sampling."""
     background_color: Literal["random", "last_sample", "black", "white"] = "last_sample"
     """Whether to randomize the background color."""
-    hidden_dim: int = 128
+    hidden_dim: int = 256
     """Dimension of hidden layers"""
-    hidden_dim_color: int = 128
+    hidden_dim_color: int = 256
     """Dimension of hidden layers for color network"""
-    hidden_dim_transient: int = 128
+    hidden_dim_transient: int = 256
     """Dimension of hidden layers for transient network"""
     num_levels: int = 16
     """Number of levels of the hashmap for the base mlp."""
@@ -128,8 +128,8 @@ class PlaneNerfConfig(ModelConfig):
     """Which implementation to use for the model."""
     appearance_embed_dim: int = 32
     """Dimension of the appearance embedding."""
-    camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="SO3xR3")
-    #camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="off")
+    #camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="SO3xR3")
+    camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="off")
     """Config of the camera optimizer to use"""
 
 
