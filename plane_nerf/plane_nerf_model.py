@@ -49,6 +49,12 @@ from nerfstudio.model_components.shaders import NormalsShader
 from nerfstudio.models.base_model import Model, ModelConfig
 from nerfstudio.utils import colormaps
 
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from collections import defaultdict
+from nerfstudio.cameras.cameras import Cameras
+from nerfstudio.cameras.rays import RayBundle
+from nerfstudio.data.scene_box import SceneBox, OrientedBox
+
 from plane_nerf.plane_nerf_field import PlaneNerfField
 
 
@@ -128,8 +134,8 @@ class PlaneNerfConfig(ModelConfig):
     """Which implementation to use for the model."""
     appearance_embed_dim: int = 32
     """Dimension of the appearance embedding."""
-    #camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="SO3xR3")
-    camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="off")
+    camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="SO3xR3")
+    #camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="off")
     """Config of the camera optimizer to use"""
 
 
@@ -421,3 +427,62 @@ class PlaneNerfModel(Model):
             images_dict[key] = prop_depth_i
 
         return metrics_dict, images_dict
+
+    # @torch.no_grad()
+    # def get_outputs_for_camera(self, camera: Cameras, obb_box: Optional[OrientedBox] = None, mask: Optional[np.ndarray] = None) -> Dict[str, torch.Tensor]:
+    #     """Takes in a camera, generates the raybundle, and computes the output of the model.
+    #     Assumes a ray-based model.
+
+    #     Args:
+    #         camera: generates raybundle
+    #     """
+        
+    #     if (mask is not None):
+    #         if (len(mask.shape) == 2):
+    #             return self.get_outputs_for_camera_ray_bundle_with_mask(
+    #                 camera.generate_rays(camera_indices=0, keep_shape=True, obb_box=obb_box),
+    #                 mask
+    #             )
+        
+    #     return self.get_outputs_for_camera_ray_bundle(
+    #         camera.generate_rays(camera_indices=0, keep_shape=True, obb_box=obb_box)
+    #     )
+
+    # @torch.no_grad()
+    # def get_outputs_for_camera_ray_bundle_with_mask(self, camera_ray_bundle: RayBundle, mask: np.ndarray) -> Dict[str, torch.Tensor]:
+    #     """Takes in camera parameters and computes the output of the model for ray bundles that fall in the mask.
+    #     The rays are generated in camera.generate_rays().
+    #     We are only pushing the rays that fall in the mask through the model.
+
+    #     Args:
+    #         camera_ray_bundle: ray bundle to calculate outputs over
+    #     """
+    #     input_device = camera_ray_bundle.directions.device
+    #     num_rays_per_chunk = self.config.eval_num_rays_per_chunk
+    #     image_height, image_width = camera_ray_bundle.origins.shape[:2]
+    #     num_rays = len(camera_ray_bundle)
+    #     outputs_lists = defaultdict(list)
+        
+    #     assert(mask.shape == (image_height, image_width))
+    #     print(input_device,num_rays_per_chunk,image_height,image_width,num_rays)
+        
+    #     for i in range(0, num_rays, num_rays_per_chunk):
+    #         start_idx = i
+    #         end_idx = i + num_rays_per_chunk
+    #         ray_bundle = camera_ray_bundle.get_row_major_sliced_ray_bundle(start_idx, end_idx)
+    #         # move the chunk inputs to the model device
+    #         ray_bundle = ray_bundle.to(self.device)
+    #         outputs = self.forward(ray_bundle=ray_bundle)
+    #         for output_name, output in outputs.items():  # type: ignore
+    #             if not isinstance(output, torch.Tensor):
+    #                 # TODO: handle lists of tensors as well
+    #                 continue
+    #             # move the chunk outputs from the model device back to the device of the inputs.
+    #             outputs_lists[output_name].append(output.to(input_device))
+        
+    #     print(outputs_lists.keys())
+    #     print(outputs_lists)
+    #     outputs = {}
+    #     for output_name, outputs_list in outputs_lists.items():
+    #         outputs[output_name] = torch.cat(outputs_list).view(image_height, image_width, -1)  # type: ignore
+    #     return outputs
