@@ -429,7 +429,7 @@ class PlaneNerfModel(Model):
         return metrics_dict, images_dict
 
     # @torch.no_grad()
-    # def get_outputs_for_camera(self, camera: Cameras, obb_box: Optional[OrientedBox] = None, mask: Optional[np.ndarray] = None) -> Dict[str, torch.Tensor]:
+    # def get_outputs_for_camera(self, camera: Cameras, obb_box: Optional[OrientedBox] = None) -> Dict[str, torch.Tensor]:
     #     """Takes in a camera, generates the raybundle, and computes the output of the model.
     #     Assumes a ray-based model.
 
@@ -437,19 +437,12 @@ class PlaneNerfModel(Model):
     #         camera: generates raybundle
     #     """
         
-    #     if (mask is not None):
-    #         if (len(mask.shape) == 2):
-    #             return self.get_outputs_for_camera_ray_bundle_with_mask(
-    #                 camera.generate_rays(camera_indices=0, keep_shape=True, obb_box=obb_box),
-    #                 mask
-    #             )
-        
     #     return self.get_outputs_for_camera_ray_bundle(
     #         camera.generate_rays(camera_indices=0, keep_shape=True, obb_box=obb_box)
     #     )
 
     # @torch.no_grad()
-    # def get_outputs_for_camera_ray_bundle_with_mask(self, camera_ray_bundle: RayBundle, mask: np.ndarray) -> Dict[str, torch.Tensor]:
+    # def get_outputs_for_camera_ray_bundle(self, camera_ray_bundle: RayBundle) -> Dict[str, torch.Tensor]:
     #     """Takes in camera parameters and computes the output of the model for ray bundles that fall in the mask.
     #     The rays are generated in camera.generate_rays().
     #     We are only pushing the rays that fall in the mask through the model.
@@ -463,7 +456,6 @@ class PlaneNerfModel(Model):
     #     num_rays = len(camera_ray_bundle)
     #     outputs_lists = defaultdict(list)
         
-    #     assert(mask.shape == (image_height, image_width))
     #     print(input_device,num_rays_per_chunk,image_height,image_width,num_rays)
         
     #     for i in range(0, num_rays, num_rays_per_chunk):

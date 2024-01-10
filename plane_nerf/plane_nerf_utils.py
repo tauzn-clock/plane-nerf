@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, Literal, Optional, Type
-from jaxtyping import Float
+from typing import Dict, Tuple, Literal
+from jaxtyping import Float 
 from torch import Tensor
 import torch
+
 
 def invert_SO3xR3_pose(transform: Float[Tensor, "3 4"]) -> Float[Tensor, "3 4"]:
     """Inverts a 3x4 pose matrix.
@@ -72,3 +73,4 @@ def transform_original_space_to_pose(
     else:
         raise ValueError(f"Camera convention {camera_convention} is not supported.")
     return output_poses[:, :3]
+
