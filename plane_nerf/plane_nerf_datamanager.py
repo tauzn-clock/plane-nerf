@@ -56,3 +56,18 @@ class PlaneNerfDataManager(VanillaDataManager):
         ray_indices = batch["indices"]
         ray_bundle = self.train_ray_generator(ray_indices)
         return ray_bundle, batch
+
+    def next_train_inerf(self, step: int) -> Tuple[RayBundle, Dict]:
+        print("inerf")
+        """Returns the next batch of data from the train dataloader."""
+        self.train_count += 1
+        image_batch = next(self.iter_train_image_dataloader)
+        assert self.train_pixel_sampler is not None
+        assert isinstance(image_batch, dict)
+        print(image_batch["image"].shape)
+        batch = self.train_pixel_sampler.sample(image_batch)
+        print(batch["indices"].shape)
+        ray_indices = batch["indices"]
+        print(ray_indices[0])
+        ray_bundle = self.train_ray_generator(ray_indices)
+        return ray_bundle, batch
