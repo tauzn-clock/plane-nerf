@@ -69,17 +69,17 @@ class PlaneNerfConfig(ModelConfig):
     """How far along the ray to stop sampling."""
     background_color: Literal["random", "last_sample", "black", "white"] = "last_sample"
     """Whether to randomize the background color."""
-    hidden_dim: int = 256
+    hidden_dim: int = 64
     """Dimension of hidden layers"""
-    hidden_dim_color: int = 256
+    hidden_dim_color: int = 64
     """Dimension of hidden layers for color network"""
-    hidden_dim_transient: int = 256
+    hidden_dim_transient: int = 64
     """Dimension of hidden layers for transient network"""
     num_levels: int = 16
     """Number of levels of the hashmap for the base mlp."""
     base_res: int = 16
     """Resolution of the base grid for the hashgrid."""
-    max_res: int = 256
+    max_res: int = 256#2048
     """Maximum resolution of the hashmap for the base mlp."""
     log2_hashmap_size: int = 19
     """Size of the hashmap for the base mlp"""
@@ -87,7 +87,7 @@ class PlaneNerfConfig(ModelConfig):
     """How many hashgrid features per level"""
     num_proposal_samples_per_ray: Tuple[int, ...] = (192, 64)
     """Number of samples per ray for each proposal network."""
-    num_nerf_samples_per_ray: int = 32
+    num_nerf_samples_per_ray: int = 48
     """Number of samples per ray for the nerf network."""
     proposal_update_every: int = 5
     """Sample every n steps after the warmup"""
