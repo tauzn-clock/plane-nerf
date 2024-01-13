@@ -85,7 +85,7 @@ class PlaneNerfConfig(ModelConfig):
     """Size of the hashmap for the base mlp"""
     features_per_level: int = 2
     """How many hashgrid features per level"""
-    num_proposal_samples_per_ray: Tuple[int, ...] = (192, 64)
+    num_proposal_samples_per_ray: Tuple[int, ...] = (256, 96)
     """Number of samples per ray for each proposal network."""
     num_nerf_samples_per_ray: int = 48
     """Number of samples per ray for the nerf network."""
@@ -134,9 +134,10 @@ class PlaneNerfConfig(ModelConfig):
     """Which implementation to use for the model."""
     appearance_embed_dim: int = 32
     """Dimension of the appearance embedding."""
-    #camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="SO3xR3")
-    camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig(mode="off")
+    #camera_optimizer: CameraOptimizerConfig = field(default_factory=lambda: CameraOptimizerConfig(mode="SO3xR3"))
+    camera_optimizer: CameraOptimizerConfig = field(default_factory=lambda: CameraOptimizerConfig(mode="off"))
     """Config of the camera optimizer to use"""
+
 
 
 class PlaneNerfModel(Model):
