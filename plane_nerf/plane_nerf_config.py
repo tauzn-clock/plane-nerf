@@ -33,7 +33,7 @@ plane_nerf_method = MethodSpecification(
         pipeline=PlaneNerfPipelineConfig(
             datamanager=PlaneNerfDataManagerConfig(
                 dataparser=NerfstudioDataParserConfig(
-                    train_split_fraction = 1.0    
+                    train_split_fraction = 1.0
                 ),
                 train_num_rays_per_batch=4096,
                 eval_num_rays_per_batch=4096,
