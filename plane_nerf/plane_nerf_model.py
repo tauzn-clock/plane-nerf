@@ -79,7 +79,7 @@ class PlaneNerfConfig(ModelConfig):
     """Number of levels of the hashmap for the base mlp."""
     base_res: int = 16
     """Resolution of the base grid for the hashgrid."""
-    max_res: int = 256#2048
+    max_res: int = 2048
     """Maximum resolution of the hashmap for the base mlp."""
     log2_hashmap_size: int = 19
     """Size of the hashmap for the base mlp"""
