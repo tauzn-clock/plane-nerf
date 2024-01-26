@@ -57,6 +57,8 @@ from nerfstudio.data.scene_box import SceneBox, OrientedBox
 
 from plane_nerf.plane_nerf_field import PlaneNerfField
 
+from plane_nerf.plane_nerf_optimizer import PlaneNerfCameraOptimizer
+
 
 @dataclass
 class PlaneNerfConfig(ModelConfig):
@@ -69,11 +71,11 @@ class PlaneNerfConfig(ModelConfig):
     """How far along the ray to stop sampling."""
     background_color: Literal["random", "last_sample", "black", "white"] = "last_sample"
     """Whether to randomize the background color."""
-    hidden_dim: int = 256#64
+    hidden_dim: int = 64
     """Dimension of hidden layers"""
-    hidden_dim_color: int = 256#64
+    hidden_dim_color: int = 64
     """Dimension of hidden layers for color network"""
-    hidden_dim_transient: int = 256#64
+    hidden_dim_transient: int = 64
     """Dimension of hidden layers for transient network"""
     num_levels: int = 16
     """Number of levels of the hashmap for the base mlp."""
@@ -180,6 +182,13 @@ class PlaneNerfModel(Model):
         self.camera_optimizer: CameraOptimizer = self.config.camera_optimizer.setup(
             num_cameras=self.num_train_data, device="cpu"
         )
+
+        self.camera_optimizer: PlaneNerfCameraOptimizer = PlaneNerfCameraOptimizer(
+            config = self.camera_optimizer.config,
+            num_cameras = self.num_train_data,
+            device = "cpu",
+        )
+
         self.density_fns = []
         num_prop_nets = self.config.num_proposal_iterations
         # Build the proposal network(s)
