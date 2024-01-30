@@ -206,4 +206,5 @@ class PlaneNerfDataManager(VanillaDataManager):
         
         ray_bundle = self.train_ray_generator(indices_tensor)
         
-        return ray_bundle, batch
+        self.inerf_ray_bundle = ray_bundle
+        self.inerf_batch = batch
