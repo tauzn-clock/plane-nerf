@@ -109,14 +109,14 @@ class PlaneNerfDataManager(VanillaDataManager):
             num_workers=self.world_size * 4,
         )
     
-    def setup_rays_inerf(self, RAYS = 4096, THRESHOLD = 10, KERNEL_SIZE = 5):
+    def setup_rays_inerf(self, RAYS = 4096, THRESHOLD = 40, KERNEL_SIZE = 5):
         image_batch = next(self.iter_train_image_dataloader)
         
         #Get image
         img = image_batch["image"][0] * image_batch["mask"][0]
         img *= 255.0
-        img = img.cpu().numpy().astype(np.uint8)
-        
+        img = img.cpu().numpy().astype(np.uint8)        
+    
         #Get keypoints from image using SIFT
         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         sift = cv2.SIFT_create(edgeThreshold=THRESHOLD)
@@ -175,4 +175,35 @@ class PlaneNerfDataManager(VanillaDataManager):
 
         return img, mask
     
-    
+    KERNEL_SIZE = 5
+    THRESHOLD = 40
+        
+    def get_inerf_raybundle_and_batch(self):
+        #Only works for one image at a time
+        batch = {}
+        img, mask = self.setup_rays_inerf(RAYS=self.config.pixel_sampler.num_rays_per_batch, 
+                                          THRESHOLD=self.THRESHOLD, 
+                                          KERNEL_SIZE=self.KERNEL_SIZE)
+        
+        img_tensor = torch.tensor([])
+        mask_tensor = torch.tensor([],dtype=torch.bool)
+        indices_tensor = torch.tensor([],dtype=torch.int64)
+        
+        (H,W,_) = img.shape
+        
+        for i in range(H):
+            for j in range(W):
+                if (mask[i,j] == 1):
+                    img_tensor = torch.cat((img_tensor, torch.tensor([img[i,j]/255.0])))
+                    mask_tensor = torch.cat((mask_tensor, torch.tensor([[True]])))
+                    indices_tensor = torch.cat((indices_tensor, torch.tensor([[0,i,j]])))
+        
+        batch["image"] = img_tensor
+        batch["mask"] = mask_tensor
+        batch["indices"] = indices_tensor
+        
+        print(batch)
+        
+        ray_bundle = self.train_ray_generator(indices_tensor)
+        
+        return ray_bundle, batch
