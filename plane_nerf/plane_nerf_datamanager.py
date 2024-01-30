@@ -2,6 +2,8 @@
 Template DataManager
 """
 
+import cv2
+import numpy as np
 from dataclasses import dataclass, field
 from typing import Dict, Literal, Tuple, Type, Union, List
 from copy import deepcopy
@@ -106,3 +108,71 @@ class PlaneNerfDataManager(VanillaDataManager):
             device=self.device,
             num_workers=self.world_size * 4,
         )
+    
+    def setup_rays_inerf(self, RAYS = 4096, THRESHOLD = 10, KERNEL_SIZE = 5):
+        image_batch = next(self.iter_train_image_dataloader)
+        
+        #Get image
+        img = image_batch["image"][0] * image_batch["mask"][0]
+        img *= 255.0
+        img = img.cpu().numpy().astype(np.uint8)
+        
+        #Get keypoints from image using SIFT
+        gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        sift = cv2.SIFT_create(edgeThreshold=THRESHOLD)
+        kp = sift.detect(gray, None)
+        
+        print("Number of keypoints: ", len(kp))
+        
+        #Get mask from keypoints
+        mask = np.zeros(gray.shape, dtype=np.uint8)
+        for point in kp:
+            x, y = point.pt
+            x, y = int(x), int(y)
+            mask[y-2:y+3, x-2:x+3] = 1
+                
+        #Dilate mask
+        kernel = np.ones((KERNEL_SIZE,KERNEL_SIZE),np.uint8)
+        mask = cv2.dilate(mask,kernel,iterations = 1)
+        
+        #Get only masks that are in the original mask
+        mask = mask.reshape((mask.shape[0], mask.shape[1], 1))
+        mask = mask * image_batch["mask"][0].cpu().numpy().astype(np.uint8)
+        
+        print("Number of rays: ", mask.sum())
+        
+        (H, W,_) = img.shape
+               
+        if (mask.sum() >= RAYS):
+            print("Reduce the number of rays")
+            #Get random points from mask
+            new_mask = mask.reshape(H*W)
+            indices = np.where(new_mask == 1)[0]
+            np.random.shuffle(indices)
+            indices = indices[:RAYS]
+            mask = np.zeros(H*W, dtype=np.uint8)
+            mask[indices] = 1
+            mask = mask.reshape((H, W, 1))
+        else:
+            print("Randomly select more rays")
+            #Fill up mask with random points until you hit RAYS
+            valid_indices =  image_batch["mask"][0].cpu().numpy().astype(np.uint8).reshape(H*W)
+            valid_indices = np.where(valid_indices == 1)[0]
+            np.random.shuffle(valid_indices)
+            
+            mask = mask.reshape(H*W)
+            cnt = 0
+            stop = int(RAYS - mask.sum())
+            for idx in valid_indices:
+                if (cnt == stop):
+                    break
+                if (mask[idx] == 0):
+                    mask[idx] = 1
+                    cnt += 1
+            mask = mask.reshape((H, W, 1))
+
+        print("Final number of rays: ", mask.sum())
+
+        return img, mask
+    
+    
