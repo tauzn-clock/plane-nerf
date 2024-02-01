@@ -129,7 +129,7 @@ class PlaneNerfDataManager(VanillaDataManager):
         for point in kp:
             x, y = point.pt
             x, y = int(x), int(y)
-            mask[y-2:y+3, x-2:x+3] = 1
+            mask[y-KERNEL_SIZE//2:y+KERNEL_SIZE//2+1, x-KERNEL_SIZE//2:x+KERNEL_SIZE//2+1] = 1
                 
         #Dilate mask
         kernel = np.ones((KERNEL_SIZE,KERNEL_SIZE),np.uint8)
@@ -178,14 +178,14 @@ class PlaneNerfDataManager(VanillaDataManager):
     KERNEL_SIZE = 5
     THRESHOLD = 40
         
-    def get_inerf_raybundle_and_batch(self):
+    def get_inerf_batch(self):
         #Only works for one image at a time
         batch = {}
         img, mask = self.setup_rays_inerf(RAYS=self.config.pixel_sampler.num_rays_per_batch, 
                                           THRESHOLD=self.THRESHOLD, 
                                           KERNEL_SIZE=self.KERNEL_SIZE)
         
-        img_tensor = torch.tensor([])
+        img_tensor = torch.tensor([],dtype=torch.float32)
         mask_tensor = torch.tensor([],dtype=torch.bool)
         indices_tensor = torch.tensor([],dtype=torch.int64)
         
@@ -201,10 +201,5 @@ class PlaneNerfDataManager(VanillaDataManager):
         batch["image"] = img_tensor
         batch["mask"] = mask_tensor
         batch["indices"] = indices_tensor
-        
-        print(batch)
-        
-        ray_bundle = self.train_ray_generator(indices_tensor)
-        
-        self.inerf_ray_bundle = ray_bundle
+                
         self.inerf_batch = batch
