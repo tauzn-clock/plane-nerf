@@ -109,7 +109,7 @@ class PlaneNerfDataManager(VanillaDataManager):
             num_workers=self.world_size * 4,
         )
     
-    def setup_rays_inerf(self, RAYS = 4096, THRESHOLD = 40, KERNEL_SIZE = 5):
+    def setup_rays_inerf(self, RAYS = 4096, THRESHOLD = 40, KERNEL_SIZE = 5, METHOD = "sift"):
         image_batch = next(self.iter_train_image_dataloader)
         
         #Get image
@@ -117,11 +117,31 @@ class PlaneNerfDataManager(VanillaDataManager):
         img *= 255.0
         img = img.cpu().numpy().astype(np.uint8)        
     
-        #Get keypoints from image using SIFT
-        gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-        sift = cv2.SIFT_create(edgeThreshold=THRESHOLD)
-        kp = sift.detect(gray, None)
+        if (METHOD == "sift"):
+            #Get keypoints from image using SIFT
+            gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+            sift = cv2.SIFT_create(edgeThreshold=THRESHOLD)
+            kp = sift.detect(gray, None)
         
+        elif (METHOD == "orb"):
+            #Get keypoints from image using ORB
+            gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+            orb = cv2.ORB_create(edgeThreshold=THRESHOLD)
+            kp = orb.detect(gray, None)
+        
+        elif (METHOD == "edge"):
+            #Get edge of image
+            gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+            edges = cv2.Canny(gray,100,200)
+            kp = []
+            for i in range(edges.shape[0]):
+                for j in range(edges.shape[1]):
+                    if (edges[i,j] == 255):
+                        kp.append(cv2.KeyPoint(j,i,1))
+        
+        else:
+            raise ValueError("Invalid method")
+            
         print("Number of keypoints: ", len(kp))
         
         #Get mask from keypoints
@@ -177,13 +197,15 @@ class PlaneNerfDataManager(VanillaDataManager):
     
     KERNEL_SIZE = 5
     THRESHOLD = 40
+    METHOD = "sift"
         
     def get_inerf_batch(self):
         #Only works for one image at a time
         batch = {}
         img, mask = self.setup_rays_inerf(RAYS=self.config.pixel_sampler.num_rays_per_batch, 
                                           THRESHOLD=self.THRESHOLD, 
-                                          KERNEL_SIZE=self.KERNEL_SIZE)
+                                          KERNEL_SIZE=self.KERNEL_SIZE,
+                                          METHOD=self.METHOD)
         
         img_tensor = torch.tensor([],dtype=torch.float32)
         mask_tensor = torch.tensor([],dtype=torch.bool)
