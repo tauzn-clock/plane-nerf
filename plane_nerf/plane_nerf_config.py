@@ -21,6 +21,7 @@ from nerfstudio.engine.schedulers import (
 )
 from nerfstudio.engine.trainer import TrainerConfig
 from nerfstudio.plugins.types import MethodSpecification
+from dataclasses import dataclass, field
 
 
 plane_nerf_method = MethodSpecification(
@@ -75,15 +76,19 @@ plane_nerf_simplified_method = MethodSpecification(
                 dataparser=NerfstudioDataParserConfig(
                     train_split_fraction = 1.0
                 ),
-                train_num_rays_per_batch=4096,
+                train_num_rays_per_batch=4096*2,
                 eval_num_rays_per_batch=4096,
             ),
             model=PlaneNerfConfig(
                 eval_num_rays_per_chunk=1 << 15,
-                hidden_dim = 32,
-                hidden_dim_color = 32,
-                hidden_dim_transient = 32,
-                max_res = 256
+                far_plane = 20.0,
+                hidden_dim = 128,
+                hidden_dim_color = 128,
+                hidden_dim_transient = 128,
+                #max_res = 256,
+                #num_levels = 4,
+                #base_res = 4,
+                #num_proposal_samples_per_ray = (128, 48)
             ),
         ),
         optimizers={
