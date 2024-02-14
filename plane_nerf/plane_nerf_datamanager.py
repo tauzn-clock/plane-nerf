@@ -116,7 +116,15 @@ class PlaneNerfDataManager(VanillaDataManager):
         img = image_batch["image"][0] * image_batch["mask"][0]
         img *= 255.0
         img = img.cpu().numpy().astype(np.uint8)        
-    
+        (H, W,_) = img.shape
+
+
+        if (METHOD == "test"):
+            mask = np.zeros((H,W,1), dtype=np.uint8)
+            mask[270,663] = 1
+            mask[270,662] = 1
+            return img, mask
+     
         if (METHOD == "sift"):
             #Get keypoints from image using SIFT
             gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
@@ -160,9 +168,7 @@ class PlaneNerfDataManager(VanillaDataManager):
         mask = mask * image_batch["mask"][0].cpu().numpy().astype(np.uint8)
         
         print("Number of rays: ", mask.sum())
-        
-        (H, W,_) = img.shape
-               
+                       
         if (mask.sum() >= RAYS):
             print("Reduce the number of rays")
             #Get random points from mask
