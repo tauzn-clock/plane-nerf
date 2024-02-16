@@ -230,4 +230,6 @@ class PlaneNerfDataManager(VanillaDataManager):
         batch["mask"] = mask_tensor
         batch["indices"] = indices_tensor
                 
+        batch["image"] = batch["image"][:,:3]
+
         self.inerf_batch = batch
