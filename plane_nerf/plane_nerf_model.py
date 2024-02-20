@@ -438,53 +438,12 @@ class PlaneNerfModel(Model):
 
         return metrics_dict, images_dict
 
-    # @torch.no_grad()
-    # def get_outputs_for_camera(self, camera: Cameras, obb_box: Optional[OrientedBox] = None) -> Dict[str, torch.Tensor]:
-    #     """Takes in a camera, generates the raybundle, and computes the output of the model.
-    #     Assumes a ray-based model.
-
-    #     Args:
-    #         camera: generates raybundle
-    #     """
-        
-    #     return self.get_outputs_for_camera_ray_bundle(
-    #         camera.generate_rays(camera_indices=0, keep_shape=True, obb_box=obb_box)
-    #     )
-
-    # @torch.no_grad()
-    # def get_outputs_for_camera_ray_bundle(self, camera_ray_bundle: RayBundle) -> Dict[str, torch.Tensor]:
-    #     """Takes in camera parameters and computes the output of the model for ray bundles that fall in the mask.
-    #     The rays are generated in camera.generate_rays().
-    #     We are only pushing the rays that fall in the mask through the model.
-
-    #     Args:
-    #         camera_ray_bundle: ray bundle to calculate outputs over
-    #     """
-    #     input_device = camera_ray_bundle.directions.device
-    #     num_rays_per_chunk = self.config.eval_num_rays_per_chunk
-    #     image_height, image_width = camera_ray_bundle.origins.shape[:2]
-    #     num_rays = len(camera_ray_bundle)
-    #     outputs_lists = defaultdict(list)
-        
-    #     print(input_device,num_rays_per_chunk,image_height,image_width,num_rays)
-        
-    #     for i in range(0, num_rays, num_rays_per_chunk):
-    #         start_idx = i
-    #         end_idx = i + num_rays_per_chunk
-    #         ray_bundle = camera_ray_bundle.get_row_major_sliced_ray_bundle(start_idx, end_idx)
-    #         # move the chunk inputs to the model device
-    #         ray_bundle = ray_bundle.to(self.device)
-    #         outputs = self.forward(ray_bundle=ray_bundle)
-    #         for output_name, output in outputs.items():  # type: ignore
-    #             if not isinstance(output, torch.Tensor):
-    #                 # TODO: handle lists of tensors as well
-    #                 continue
-    #             # move the chunk outputs from the model device back to the device of the inputs.
-    #             outputs_lists[output_name].append(output.to(input_device))
-        
-    #     print(outputs_lists.keys())
-    #     print(outputs_lists)
-    #     outputs = {}
-    #     for output_name, outputs_list in outputs_lists.items():
-    #         outputs[output_name] = torch.cat(outputs_list).view(image_height, image_width, -1)  # type: ignore
-    #     return outputs
+    def get_rgb_outputs(self,ray_bundle):
+        ray_bundle = self.collider(ray_bundle)
+        self.camera_optimizer.apply_to_raybundle(ray_bundle)
+        ray_samples: RaySamples
+        ray_samples, _, _ = self.proposal_sampler(ray_bundle, density_fns=self.density_fns)
+        field_outputs = self.field.forward(ray_samples, compute_normals=self.config.predict_normals)
+        weights = ray_samples.get_weights(field_outputs[FieldHeadNames.DENSITY])
+        rgb = self.renderer_rgb(rgb=field_outputs[FieldHeadNames.RGB], weights=weights)
+        return rgb
