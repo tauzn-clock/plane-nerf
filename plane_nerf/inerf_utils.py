@@ -246,8 +246,6 @@ def get_image(pipeline, pose):
                                             pipeline.datamanager.train_dataparser_outputs.dataparser_transform.to(pipeline.device),
                                             pipeline.datamanager.train_dataparser_outputs.dataparser_scale,
                                             "opengl").to("cpu")
-    #pipeline.datamanager.train_dataset = pipeline.datamanager.create_train_dataset()
-    #pipeline.datamanager.setup_train()
     outputs = pipeline.model.get_outputs_for_camera(camera=camera)    
     return outputs
                                            
