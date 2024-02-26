@@ -434,8 +434,12 @@ class PlaneNerfModel(Model):
         #Get rgb values where the pixel is masked, remove the rest of the values from tensor
         gt_rgb_masked = torch.masked_select(gt_rgb, mask)
         predicted_rgb_masked = torch.masked_select(predicted_rgb, mask)
-
+        gt_rgb_masked = mask * gt_rgb
+        predicted_rgb_masked = mask * predicted_rgb
+        
         metrics_dict["psnr_masked"] = float(self.psnr(predicted_rgb_masked, gt_rgb_masked).item())
+        metrics_dict["ssim_masked"] = float(self.ssim(predicted_rgb_masked, gt_rgb_masked))
+        metrics_dict["lpips_masked"] = float(self.lpips(predicted_rgb_masked, gt_rgb_masked))
 
         images_dict = {"img": combined_rgb, "accumulation": combined_acc, "depth": combined_depth}
 
