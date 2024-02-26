@@ -64,9 +64,9 @@ plane_nerf_method = MethodSpecification(
     description="Plane Nerf Method",
 )
 
-plane_nerf_simplified_method = MethodSpecification(
+plane_nerf_fast_method = MethodSpecification(
     config=TrainerConfig(
-        method_name="plane-nerf-simplified",
+        method_name="plane-nerf-fast",
         steps_per_eval_batch=500,
         steps_per_save=2000,
         max_num_iterations=10000,
@@ -76,19 +76,17 @@ plane_nerf_simplified_method = MethodSpecification(
                 dataparser=NerfstudioDataParserConfig(
                     train_split_fraction = 1.0
                 ),
-                train_num_rays_per_batch=4096*2,
+                train_num_rays_per_batch=4096,
                 eval_num_rays_per_batch=4096,
             ),
             model=PlaneNerfConfig(
                 eval_num_rays_per_chunk=1 << 15,
-                far_plane = 20.0,
-                hidden_dim = 128,
-                hidden_dim_color = 128,
-                hidden_dim_transient = 128,
-                #max_res = 256,
-                #num_levels = 4,
-                #base_res = 4,
-                #num_proposal_samples_per_ray = (128, 48)
+                far_plane = 50.0,
+                hidden_dim = 32,
+                hidden_dim_color = 32,
+                hidden_dim_transient = 32,
+                num_proposal_samples_per_ray = (128, 48),
+                max_res = 256,
             ),
         ),
         optimizers={
@@ -109,5 +107,5 @@ plane_nerf_simplified_method = MethodSpecification(
         viewer=ViewerConfig(num_rays_per_chunk=1 << 15),
         vis="viewer",
     ),
-    description="Plane Nerf Method (Lower Detail)",
+    description="Plane Nerf Method (Faster)",
 )

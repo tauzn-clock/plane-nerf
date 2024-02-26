@@ -10,4 +10,4 @@ include = ["plane_nerf*"]
 
 [project.entry-points.'nerfstudio.method_configs']
 plane_nerf = 'plane_nerf.plane_nerf_config:plane_nerf_method'
-plane_nerf_simiplified = 'plane_nerf.plane_nerf_config:plane_nerf_simplified_method'
+plane_nerf_fast = 'plane_nerf.plane_nerf_config:plane_nerf_fast_method'
