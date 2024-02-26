@@ -426,6 +426,17 @@ class PlaneNerfModel(Model):
         metrics_dict = {"psnr": float(psnr.item()), "ssim": float(ssim)}  # type: ignore
         metrics_dict["lpips"] = float(lpips)
 
+        #PSNR in mask region
+        mask = batch["mask"].to(self.device)
+        gt_rgb_shape = gt_rgb.shape
+        mask = mask.squeeze(-1)
+        mask = mask.reshape((1,1)+mask.shape)
+        #Get rgb values where the pixel is masked, remove the rest of the values from tensor
+        gt_rgb_masked = torch.masked_select(gt_rgb, mask)
+        predicted_rgb_masked = torch.masked_select(predicted_rgb, mask)
+
+        metrics_dict["psnr_masked"] = float(self.psnr(predicted_rgb_masked, gt_rgb_masked).item())
+
         images_dict = {"img": combined_rgb, "accumulation": combined_acc, "depth": combined_depth}
 
         for i in range(self.config.num_proposal_iterations):
