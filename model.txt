@@ -1,0 +1,7 @@
+0 error, no opt: /workspace/plane-nerf/outputs/jackal_training_data_0/plane-nerf/2024-02-27_170140
+1 error, plane opt: /workspace/plane-nerf/outputs/jackal_training_data_1/plane-nerf/2024-02-27_113348#
+2 error, plane opt: /workspace/plane-nerf/outputs/jackal_training_data_2/plane-nerf/2024-02-27_133004
+5 error, plane opt: /workspace/plane-nerf/outputs/jackal_training_data_5/plane-nerf/2024-02-27_142300
+10 error, plane opt: /workspace/plane-nerf/outputs/jackal_training_data_10/plane-nerf/2024-02-27_153507
+1 error, default opt: /workspace/plane-nerf/outputs/jackal_training_data_1/plane-nerf/2024-02-27_214558
+2 error, default opt: /workspace/plane-nerf/outputs/jackal_training_data_2/plane-nerf/2024-02-27_222927
