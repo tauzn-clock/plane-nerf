@@ -164,3 +164,4 @@ cython_debug/
 
 /data/
 yolo/robotflow_api.key
+yolo/jackal*
