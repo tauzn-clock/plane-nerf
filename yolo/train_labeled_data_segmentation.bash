@@ -7,5 +7,5 @@ yolo task=segment \
 mode=train \
 model=yolov8m-seg.pt \
 data=$DIR/jackal_seg-4/data.yaml \
-epochs=100 \
+epochs=70 \
 imgsz=640
