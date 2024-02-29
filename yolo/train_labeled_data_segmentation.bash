@@ -6,6 +6,6 @@ echo $DIR
 yolo task=segment \
 mode=train \
 model=yolov8m-seg.pt \
-data=$DIR/jackal_seg-2/data.yaml \
+data=$DIR/jackal_seg-4/data.yaml \
 epochs=100 \
 imgsz=640
