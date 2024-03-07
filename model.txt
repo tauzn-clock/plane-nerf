@@ -10,3 +10,5 @@
 
 1 error, half: /workspace/plane-nerf/outputs/jackal_training_data_1_half/plane-nerf/2024-03-07_112723
 1 error, fifth: /workspace/plane-nerf/outputs/jackal_training_data_1_fifth/plane-nerf/2024-03-07_120323
+2 error, half: /workspace/plane-nerf/outputs/jackal_training_data_2_half/plane-nerf/2024-03-07_135438
+2 error, fifth: /workspace/plane-nerf/outputs/jackal_training_data_2_fifth/plane-nerf/2024-03-07_125436
