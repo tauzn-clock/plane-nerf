@@ -1,3 +1,4 @@
+Jackal
 0 error, no opt: /workspace/plane-nerf/outputs/jackal_training_data_0/plane-nerf/2024-02-27_170140
 1 error, plane opt: /workspace/plane-nerf/outputs/jackal_training_data_1/plane-nerf/2024-02-27_113348
 2 error, plane opt: /workspace/plane-nerf/outputs/jackal_training_data_2/plane-nerf/2024-02-27_133004
@@ -8,7 +9,10 @@
 5 error, default opt: /workspace/plane-nerf/outputs/jackal_training_data_5/plane-nerf/2024-02-28_094653
 10 error, default opt: /workspace/plane-nerf/outputs/jackal_training_data_10/plane-nerf/2024-02-28_102732
 
-1 error, half: /workspace/plane-nerf/outputs/jackal_training_data_1_half/plane-nerf/2024-03-07_112723
-1 error, fifth: /workspace/plane-nerf/outputs/jackal_training_data_1_fifth/plane-nerf/2024-03-07_120323
-2 error, half: /workspace/plane-nerf/outputs/jackal_training_data_2_half/plane-nerf/2024-03-07_135438
-2 error, fifth: /workspace/plane-nerf/outputs/jackal_training_data_2_fifth/plane-nerf/2024-03-07_125436
+1 error, half: /workspace/plane-nerf/outputs/jackal_training_data_1_half/plane-nerf/2024-03-08_124819
+1 error, fifth: /workspace/plane-nerf/outputs/jackal_training_data_1_fifth/plane-nerf/2024-03-08_173448
+2 error, half: /workspace/plane-nerf/outputs/jackal_training_data_2_half/plane-nerf/2024-03-08_192605
+2 error, fifth: /workspace/plane-nerf/outputs/jackal_training_data_2_fifth/plane-nerf/2024-03-08_182452
+
+Turtle
+0 error, no opt: /workspace/plane-nerf/outputs/turtle_training_data_0/plane-nerf/2024-03-08_114746
