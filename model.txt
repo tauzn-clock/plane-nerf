@@ -21,5 +21,7 @@ Jackal
 1 errro, 1 spin, half: /workspace/plane-nerf/outputs/jackal_training_data_1_1_spins_half/plane-nerf/2024-03-09_213227
 1 error, 1 spin, fifth: /workspace/plane-nerf/outputs/jackal_training_data_1_1_spins_fifth/plane-nerf/2024-03-09_205043
 
+With floor: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf/2024-03-11_145657
+
 Turtle
 0 error, no opt: /workspace/plane-nerf/outputs/turtle_training_data_0/plane-nerf/2024-03-08_114746

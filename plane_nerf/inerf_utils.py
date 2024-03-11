@@ -337,3 +337,55 @@ def inerf(trainer, ITERATION = 1000, LR = 1e-3, GROUND_TRUTH_POSE=None):
         ans["rotation_diff"] = torch.mean(r_diff)
     
     return ans
+
+def get_intrinsic(pipeline,idx):
+
+    intrinsic = torch.zeros((3,4))
+    intrinsic[0,0] = pipeline.datamanager.train_dataparser_outputs.cameras.fx[idx]
+    intrinsic[0,2] = pipeline.datamanager.train_dataparser_outputs.cameras.cx[idx]
+    intrinsic[1,1] = pipeline.datamanager.train_dataparser_outputs.cameras.fy[idx]
+    intrinsic[1,2] = pipeline.datamanager.train_dataparser_outputs.cameras.cy[idx]
+    intrinsic[2,2] = 1
+    
+    return intrinsic.to(pipeline.device)
+
+def get_extrinsic(camera,idx,pipeline):
+    extrinsic = camera.camera_to_worlds[idx]
+    extrinsic = extrinsic.reshape(1,3,4).to(pipeline.device)
+    extrinsic = transform_poses_to_original_space(extrinsic,
+                                                  pipeline.datamanager.train_dataparser_outputs.dataparser_transform.to(pipeline.device),
+                                                  pipeline.datamanager.train_dataparser_outputs.dataparser_scale,
+                                                  "opengl"
+                                                  )
+    
+    extrinsic = extrinsic.reshape(3,4)
+    extrinsic = torch.concat((extrinsic, torch.tensor([0,0,0,1]).reshape(1,4).to(pipeline.device)),0)
+
+    return extrinsic
+
+def get_footprint(intrinsic, extrinsic, mask):
+    assert intrinsic.device == extrinsic.device
+    device = intrinsic.device
+
+    matrix = torch.matmul(intrinsic, extrinsic)
+    matrix = torch.concat((matrix[:,:2], matrix[:,3].reshape(3,1)),1)
+    matrix = torch.inverse(matrix)
+
+    #Get contour of mask
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    largest_contour = max(contours, key=cv2.contourArea)
+
+    #Get footprint
+    footprint = torch.tensor([]).to(device)
+    for coord in largest_contour:
+        (x,y) = coord[0]
+        point = torch.tensor([x,y,1]).reshape(3,1).float().to(device)
+        point = torch.matmul(matrix, point)
+        point = point/point[2]
+        footprint = torch.cat((footprint, point[:2]), 1)
+
+    return footprint
+
+def get_image_with_footprint(pipeline, pose, footprint):
+    outputs = get_image(pipeline, pose)
+    return outputs
