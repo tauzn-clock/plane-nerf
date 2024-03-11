@@ -382,10 +382,29 @@ def get_footprint(intrinsic, extrinsic, mask):
         point = torch.tensor([x,y,1]).reshape(3,1).float().to(device)
         point = torch.matmul(matrix, point)
         point = point/point[2]
+        point = point.to(device)
         footprint = torch.cat((footprint, point[:2]), 1)
 
     return footprint
 
-def get_image_with_footprint(pipeline, pose, footprint):
-    outputs = get_image(pipeline, pose)
-    return outputs
+def get_image_with_footprint(pipeline, camera, intrinsic, extrinsic, footprint):
+    outputs = pipeline.model.get_outputs_for_camera(camera=camera)  
+
+    output_image = outputs["rgb"].reshape(camera.height, camera.width, 3).cpu().numpy()
+    output_image = (output_image * 255).astype(np.uint8)
+    for i in range(footprint.shape[1]):
+        (x,y) = footprint[:,i]
+        footprint_pose = torch.tensor([x,y,0,1]).reshape(4,1).to(pipeline.device)
+
+        pixel = intrinsic @ extrinsic @ footprint_pose
+        pixel = pixel / pixel[2]
+
+        output_image = cv2.circle(output_image, (int(pixel[0]), int(pixel[1])), 5, (0, 0, 255), -1)
+
+    #Draw orgin
+    origin_pose = torch.tensor([0,0,0,1]).reshape(4,1).float().to(pipeline.device)
+    pixel = intrinsic @ extrinsic @ origin_pose
+    pixel = pixel / pixel[2]
+    output_image = cv2.circle(output_image, (int(pixel[0]), int(pixel[1])), 5, (0, 255, 0), -1)
+
+    return output_image
