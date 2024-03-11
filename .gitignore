@@ -168,3 +168,6 @@ yolo/jackal*
 yolo/runs
 yolo/wandb
 yolo/yolov8n.pt
+yolo/yolov8m-seg.pt
+yolo/segmentation_pipeline/yolov8n.pt
+yolo/segmentation_pipeline/yolov8m-seg.pt
