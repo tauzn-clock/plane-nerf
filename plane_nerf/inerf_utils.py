@@ -392,6 +392,7 @@ def get_image_with_footprint(pipeline, camera, intrinsic, extrinsic, footprint):
 
     output_image = outputs["rgb"].reshape(camera.height, camera.width, 3).cpu().numpy()
     output_image = (output_image * 255).astype(np.uint8)
+    pixel_coord = []
     for i in range(footprint.shape[1]):
         (x,y) = footprint[:,i]
         footprint_pose = torch.tensor([x,y,0,1]).reshape(4,1).to(pipeline.device)
@@ -399,12 +400,14 @@ def get_image_with_footprint(pipeline, camera, intrinsic, extrinsic, footprint):
         pixel = intrinsic @ extrinsic @ footprint_pose
         pixel = pixel / pixel[2]
 
-        output_image = cv2.circle(output_image, (int(pixel[0]), int(pixel[1])), 5, (0, 0, 255), -1)
+        pixel_coord.append((int(pixel[0]), int(pixel[1])))
+    
+    output_image = cv2.polylines(output_image, [np.array(pixel_coord)], True, (0, 255, 0), 2)
 
     #Draw orgin
     origin_pose = torch.tensor([0,0,0,1]).reshape(4,1).float().to(pipeline.device)
     pixel = intrinsic @ extrinsic @ origin_pose
     pixel = pixel / pixel[2]
-    output_image = cv2.circle(output_image, (int(pixel[0]), int(pixel[1])), 5, (0, 255, 0), -1)
+    output_image = cv2.circle(output_image, (int(pixel[0]), int(pixel[1])), 5, (0, 0, 255), -1)
 
     return output_image
