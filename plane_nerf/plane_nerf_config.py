@@ -85,9 +85,8 @@ plane_nerf_fast_method = MethodSpecification(
                 #hidden_dim = 32,
                 #hidden_dim_color = 32,
                 #hidden_dim_transient = 32,
-                #num_proposal_samples_per_ray = (256*2, 96*2),
+                num_proposal_samples_per_ray = (256//2, 96//2),
                 #num_nerf_samples_per_ray = 48*2
-                #max_res = 256,
             ),
         ),
         optimizers={
