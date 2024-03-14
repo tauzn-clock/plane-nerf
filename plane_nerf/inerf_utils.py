@@ -408,6 +408,6 @@ def get_image_with_footprint(pipeline, camera, intrinsic, extrinsic, footprint):
     origin_pose = torch.tensor([0,0,0,1]).reshape(4,1).float().to(pipeline.device)
     pixel = intrinsic @ extrinsic @ origin_pose
     pixel = pixel / pixel[2]
-    output_image = cv2.circle(output_image, (int(pixel[0]), int(pixel[1])), 5, (0, 0, 255), -1)
+    output_image = cv2.circle(output_image, (int(pixel[0]), int(pixel[1])), 5, (255, 0, 0), -1)
 
     return output_image
