@@ -23,5 +23,14 @@ Jackal
 
 With floor: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf/2024-03-11_145657
 
+Shrink far plane
+With floor, 64 net: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-15_135211
+With floor, 32 net: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-16_092655
+With floor: 16 net:
+
+With floor: 64 net, half proposal: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-13_105236
+With floor: 32 net, half proposal
+With floor: 16 net half proposal
+
 Turtle
-0 error, no opt: /workspace/plane-nerf/outputs/turtle_training_data_0/plane-nerf/2024-03-08_114746
+0 error, no opt: /workspace/plane-nerf/outputs/turtle_training_data_0/plane-nerf/2024-03-08_114746:
