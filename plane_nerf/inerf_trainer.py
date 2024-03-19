@@ -125,19 +125,21 @@ class INerfTrainer(Trainer):
         rgb_loss = self.rgb_loss_func(gt_rgb, predicted_rgb)
 
         #Pixel Loss
-        # mask_centre = self.pipeline.datamanager.train_dataparser_outputs.mask_midpt
-        # corrected_pose = get_corrected_pose(self)
-        # corrected_pose = torch.cat(
-        #     (
-        #         corrected_pose,
-        #         torch.tensor([[[0, 0, 0, 1]]], dtype=corrected_pose.dtype, device=corrected_pose.device).repeat_interleave(len(corrected_pose), 0),
-        #     ),
-        #     1,
-        # )
-        # expected_origin = get_origin(corrected_pose,self.camera_intrinsic)
-        # pixel_loss = torch.square(torch.norm(expected_origin - mask_centre)) 
-        # pixel_loss = torch.max(pixel_loss, torch.tensor([200], dtype=pixel_loss.dtype, device=pixel_loss.device))
-        # pixel_loss = pixel_loss * 1e-4
+        mask_centre = self.pipeline.datamanager.train_dataparser_outputs.mask_midpt
+        corrected_pose = get_corrected_pose(self)
+        corrected_pose = torch.cat(
+            (
+                corrected_pose,
+                torch.tensor([[[0, 0, 0, 1]]], dtype=corrected_pose.dtype, device=corrected_pose.device).repeat_interleave(len(corrected_pose), 0),
+            ),
+            1,
+        )
+        expected_origin = get_origin(corrected_pose,self.camera_intrinsic)
+        pixel_loss = torch.square(torch.norm(expected_origin - mask_centre)) 
+        pixel_loss = torch.max(pixel_loss, torch.tensor([400], dtype=pixel_loss.dtype, device=pixel_loss.device))
+        pixel_loss = pixel_loss * 1e-5
+
+        #print(rgb_loss, pixel_loss)
         
         #loss = rgb_loss #+ pixel_loss
 
@@ -150,7 +152,7 @@ class INerfTrainer(Trainer):
         #     if abs_diff[i][0] < epsilon and abs_diff[i][1] < epsilon and abs_diff[i][2] < epsilon:
         #         close_pixels += 1
 
-        return {"loss": rgb_loss}
+        return {"loss": rgb_loss + pixel_loss }
 
     @profiler.time_function
     def train_iteration_inerf(self, optimizer_lr: Optional[Float] = None) -> TRAIN_INTERATION_OUTPUT:
