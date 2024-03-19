@@ -34,5 +34,21 @@ With floor, one layer (256): /workspace/plane-nerf/outputs/jackal_floor_training
 With floor, one layer (128): /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-17_114145
 With floor, one layer (64): /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-17_122500
 
+
+64 net, 128, 48, 24
+/workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-18_225408.csv
+64 net, 64,24,12, mse
+/workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_154207/eval_results_2024-03-18_162345.csv
+with pixel loss
+/workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_154207/eval_results_2024-03-18_190432.csv
+
+Final: 64 net, 128, 48, 24
+
+10 default: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-18_225408.csv
+10 with pixel: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-19_112115.csv
+20 default:
+20 with pixel: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-19_203346.csv
+30 default:
+30 with pixel:
 Turtle
 0 error, no opt: /workspace/plane-nerf/outputs/turtle_training_data_0/plane-nerf/2024-03-08_114746:
