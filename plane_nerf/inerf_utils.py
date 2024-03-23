@@ -338,6 +338,50 @@ def inerf(trainer, ITERATION = 1000, LR = 1e-3, GROUND_TRUTH_POSE=None):
     
     return ans
 
+def inerf_v2(trainer, ITERATION = (200, 100, 200), GROUND_TRUTH_POSE=None):
+    trainer.pipeline.datamanager.get_inerf_batch()  
+    trainer.pipeline.datamanager.inerf_batch["image"] = trainer.pipeline.datamanager.inerf_batch["image"].to(trainer.pipeline.device)
+    trainer.pipeline.train()
+
+    print(trainer.pipeline.datamanager.train_dataparser_outputs.cameras.camera_to_worlds)
+
+    #Fix Translation
+    for i in range(ITERATION[0]):
+        loss = trainer.train_iteration_inerf(optimizer_lr = 1e-3)
+    
+    #Sample Rotation
+    correction = get_corrected_pose(trainer).squeeze(0)
+    dataparser_transform_gpu = trainer.pipeline.datamanager.train_dataparser_outputs.dataparser_transform.to(trainer.device)
+    min_loss = loss
+    min_pose = correction
+    for r in range(ITERATION[1]):
+        angle = r / ITERATION[1] * 2 * np.pi
+        rotation = Rotation.from_euler('Z', angle).as_matrix()    
+        rotation = torch.tensor(rotation).unsqueeze(0).float().to(trainer.device)
+
+        new_pose = rotation @ correction
+        new_pose = transform_original_space_to_pose(new_pose,                                                   
+                                                    dataparser_transform_gpu,
+                                                    trainer.pipeline.datamanager.train_dataparser_outputs.dataparser_scale,
+                                                    "opengl")
+        
+        trainer.pipeline.datamanager.train_dataparser_outputs.cameras.camera_to_worlds[0] = new_pose
+        loss = trainer.get_loss()
+        if (loss["loss"] < min_loss["loss"]):
+            min_loss = loss
+            min_pose = new_pose
+
+    print(min_loss)
+    print(min_pose)
+
+    #Final loop
+    trainer.pipeline.datamanager.train_dataparser_outputs.cameras.camera_to_worlds[0] = min_pose
+    trainer.pipeline.model.camera_optimizer.pose_adjustment = torch.nn.Parameter(torch.zeros((1, 3), device=trainer.device, requires_grad=True))
+    trainer.optimizers = trainer.setup_optimizers()
+    trainer._load_checkpoint_inerf()
+    return inerf(trainer, ITERATION=ITERATION[2], GROUND_TRUTH_POSE=GROUND_TRUTH_POSE)
+
+
 def get_intrinsic(pipeline,idx):
 
     intrinsic = torch.zeros((3,4))

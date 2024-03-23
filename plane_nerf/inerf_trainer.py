@@ -152,7 +152,7 @@ class INerfTrainer(Trainer):
         #     if abs_diff[i][0] < epsilon and abs_diff[i][1] < epsilon and abs_diff[i][2] < epsilon:
         #         close_pixels += 1
 
-        return {"loss": rgb_loss + pixel_loss }
+        return {"loss": rgb_loss + pixel_loss}
 
     @profiler.time_function
     def train_iteration_inerf(self, optimizer_lr: Optional[Float] = None) -> TRAIN_INTERATION_OUTPUT:
