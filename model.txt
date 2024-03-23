@@ -44,6 +44,7 @@ with pixel loss
 
 Final: 64 net, 128, 48, 24
 
+400 pixel sq
 10 default: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-18_225408.csv
 10 with pixel: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-19_112115.csv
 20 default: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-20_150641.csv
@@ -51,10 +52,13 @@ Final: 64 net, 128, 48, 24
 30 default: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-20_104355.csv
 30 with pixel:/workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-20_000621.csv
 
+2500 pixel sq
+
 Logo
 /workspace/plane-nerf/outputs/jackal_logo_training_data_1/plane-nerf/2024-03-20_210250
 
 10: /workspace/plane-nerf/outputs/jackal_logo_training_data_1/plane-nerf/2024-03-20_210250/eval_results_2024-03-22_091017.csv
+20: /workspace/plane-nerf/outputs/jackal_logo_training_data_1/plane-nerf/2024-03-20_210250/eval_results_2024-03-22_164919.csv
 
 Tag
 /workspace/plane-nerf/outputs/jackal_tag_training_data_1/plane-nerf/2024-03-20_215238
