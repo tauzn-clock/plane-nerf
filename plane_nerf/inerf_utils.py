@@ -324,7 +324,10 @@ def inerf(trainer, ITERATION = 1000, LR = 1e-3, GROUND_TRUTH_POSE=None):
             #print("Average translation error: ", torch.mean(t_diff))
             #print("Average rotation error: ", torch.mean(r_diff))
             #print(loss)
-        loss = trainer.train_iteration_inerf(optimizer_lr = LR)
+
+        lr = LR * 0.8 ** (i // 100)
+
+        loss = trainer.train_iteration_inerf(optimizer_lr = lr)
 
     corrected_pose = get_corrected_pose(trainer)
     ans = {}
