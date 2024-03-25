@@ -139,6 +139,34 @@ class INerfTrainer(Trainer):
         pixel_loss = torch.max(pixel_loss, torch.tensor([400], dtype=pixel_loss.dtype, device=pixel_loss.device))
         pixel_loss = pixel_loss * 1e-5
 
+        #Weighted by distance to origin
+
+        #indices = batch["indices"].to(self.device)[:,1:3]
+        
+        #Get l2 distance from each pixel to origin
+        #distance = torch.norm(indices - expected_origin, dim=1)
+         
+        #Get MSE multiplied by distance
+        
+        # #Orientation Loss
+        
+        # #Find rgb_centroid of gt_rgb
+        # indices = batch["indices"].to(self.device)[:,1:3]
+        # region_centroid = torch.sum(indices,dim=0)/len(indices)
+        # print(region_centroid)
+
+        # gt_transpose = gt_rgb.unsqueeze(2)  
+        # gt_rgb_direction = indices.unsqueeze(2) * gt_transpose.permute(0, 2, 1)  
+        # gt_rgb_direction = torch.sum(gt_rgb_direction, dim=0) / torch.sum(gt_rgb, dim=0).unsqueeze(0)
+        # print(gt_rgb_direction)
+
+        # predicted_transpose = predicted_rgb.unsqueeze(2)
+        # predicted_rgb_direction = indices.unsqueeze(2) * predicted_transpose.permute(0, 2, 1)
+        # predicted_rgb_direction = torch.sum(predicted_rgb_direction, dim=0) / torch.sum(predicted_rgb, dim=0).unsqueeze(0)
+        # print(predicted_rgb_direction)
+
+        # print(self.rgb_loss_func(gt_rgb_direction, predicted_rgb_direction))
+
         #print(rgb_loss, pixel_loss)
         
         #loss = rgb_loss #+ pixel_loss
