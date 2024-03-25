@@ -434,11 +434,7 @@ def get_footprint(intrinsic, extrinsic, mask):
 
     return footprint
 
-def get_image_with_footprint(pipeline, camera, intrinsic, extrinsic, footprint):
-    outputs = pipeline.model.get_outputs_for_camera(camera=camera)  
-
-    output_image = outputs["rgb"].reshape(camera.height, camera.width, 3).cpu().numpy()
-    output_image = (output_image * 255).astype(np.uint8)
+def get_footprint_mask(pipeline, camera, intrinsic, extrinsic, footprint):
     pixel_coord = []
     for i in range(footprint.shape[1]):
         (x,y) = footprint[:,i]
@@ -448,7 +444,15 @@ def get_image_with_footprint(pipeline, camera, intrinsic, extrinsic, footprint):
         pixel = pixel / pixel[2]
 
         pixel_coord.append((int(pixel[0]), int(pixel[1])))
+
+    return pixel_coord
+
+def get_image_with_footprint(pipeline, camera, intrinsic, extrinsic, footprint):
+    outputs = pipeline.model.get_outputs_for_camera(camera=camera)  
+    output_image = outputs["rgb"].reshape(camera.height, camera.width, 3).cpu().numpy()
+    output_image = (output_image * 255).astype(np.uint8)
     
+    pixel_coord = get_footprint_mask(pipeline, camera, intrinsic, extrinsic, footprint)
     output_image = cv2.polylines(output_image, [np.array(pixel_coord)], True, (0, 255, 0), 2)
 
     #Draw orgin
