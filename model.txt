@@ -52,16 +52,19 @@ Final: 64 net, 128, 48, 24
 30 default: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-20_104355.csv
 30 with pixel:/workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-20_000621.csv
 
-2500 pixel sq
+
 
 Logo
 /workspace/plane-nerf/outputs/jackal_logo_training_data_1/plane-nerf/2024-03-20_210250
 
 10: /workspace/plane-nerf/outputs/jackal_logo_training_data_1/plane-nerf/2024-03-20_210250/eval_results_2024-03-22_091017.csv
 20: /workspace/plane-nerf/outputs/jackal_logo_training_data_1/plane-nerf/2024-03-20_210250/eval_results_2024-03-22_164919.csv
+30: /workspace/plane-nerf/outputs/jackal_logo_training_data_1/plane-nerf/2024-03-20_210250/eval_results_2024-03-23_203321.csv
 
 Tag
 /workspace/plane-nerf/outputs/jackal_tag_training_data_1/plane-nerf/2024-03-20_215238
+
+30: /workspace/plane-nerf/outputs/jackal_tag_training_data_1/plane-nerf/2024-03-20_215238/eval_results_2024-03-23_150727.csv
 
 Color Wheel
 /workspace/plane-nerf/outputs/jackal_color_wheel_training_data_1/plane-nerf/2024-03-20_224232
@@ -70,5 +73,22 @@ Color Wheel
 20: /workspace/plane-nerf/outputs/jackal_color_wheel_training_data_1/plane-nerf/2024-03-20_224232/eval_results_2024-03-21_144819.csv
 30: /workspace/plane-nerf/outputs/jackal_color_wheel_training_data_1/plane-nerf/2024-03-20_224232/eval_results_2024-03-21_092209.csv
 
+Annealing:
+
+Original NeRF model:
+/workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf/2024-03-11_145657/eval_results_2024-03-24_183231.csv
+
+After Reducing Sampler:
+Full: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-15_135211/eval_results_2024-03-24_211636.csv
+Half: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-24_235942.csv
+Quarter: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_154207/eval_results_2024-03-25_072121.csv
+
+Default:
+10: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-24_235942.csv
+20: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-25_085450.csv
+30: /workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf-fast/2024-03-18_221148/eval_results_2024-03-25_133217.csv
+
 Turtle
 0 error, no opt: /workspace/plane-nerf/outputs/turtle_training_data_0/plane-nerf/2024-03-08_114746:
+
+0 error, full sampler, 128 size: /workspace/plane-nerf/outputs/turtle_tag_training_data_1/plane-nerf-fast/2024-03-24_130926
