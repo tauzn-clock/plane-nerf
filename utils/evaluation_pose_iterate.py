@@ -11,8 +11,8 @@ from plane_nerf.inerf_trainer import load_data_into_trainer
 from plane_nerf.inerf_utils import load_eval_image_into_pipeline, inerf, inerf_v2
 
 os.chdir('/workspace/plane-nerf')
-MODEL_PATH = "/workspace/plane-nerf/outputs/jackal_floor_training_data_1/plane-nerf/2024-03-11_145657"
-DATA_PATH = "/workspace/plane-nerf/data/jackal_floor_evaluation_data"
+MODEL_PATH = "/workspace/plane-nerf/outputs/jackal_logo_training_data_1/plane-nerf-fast/2024-03-27_120517"
+DATA_PATH = "/workspace/plane-nerf/data/jackal_logo_evaluation_data"
 GROUND_TRUTH_PATH = os.path.join(DATA_PATH, "ground_truth.json")
 SAVE_FILE_NAME = "eval_results_"+str(time.strftime("%Y-%m-%d_%H%M%S"))+".csv"
 
