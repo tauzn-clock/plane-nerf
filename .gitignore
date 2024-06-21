@@ -163,6 +163,7 @@ cython_debug/
 
 
 /data/
+/colmap/data
 yolo/robotflow_api.key
 yolo/jackal*
 yolo/runs
